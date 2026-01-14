@@ -1,0 +1,7 @@
+ID,name,category,price,stock
+1,Day Pass Friday,Ticket,75.00,10000
+2,Day Pass Saturday,Ticket,85.00,10000
+3,Full Weekend Pass,Ticket,199.00,5000
+4,VIP Weekend Pass,Ticket,450.00,500
+5,Festival T-Shirt,Merchandise,35.00,2000
+6,Drink Tokens 10x,FoodDrinks,25.00,5000

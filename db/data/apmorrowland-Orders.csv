@@ -1,0 +1,3 @@
+ID,customer_ID,orderDate,status,orderType,totalAmount
+1,1,2025-06-15,Paid,Ticket,199.00
+2,2,2025-06-20,Open,Merchandise,70.00
