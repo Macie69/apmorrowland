@@ -1,5 +1,6 @@
 <mvc:View controllerName="apmorrowland.artistmanagement.controller.ArtistOverview"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
         <headerContent>
@@ -24,9 +25,40 @@
                         <ToolbarSpacer id="toolbarSpacer"/>
                         <SearchField 
                             id="searchField"
-                            width="300px" 
+                            width="200px" 
                             search="onSearch" 
                             placeholder="Zoek op naam..."/>
+                        <Select id="genreFilter" 
+                            change="onFilterChange"
+                            forceSelection="false">
+                            <items>
+                                <core:Item id="filterAllGenres" key="" text="Alle Genres"/>
+                                <core:Item id="filterEDM" key="EDM" text="EDM"/>
+                                <core:Item id="filterTechno" key="Techno" text="Techno"/>
+                                <core:Item id="filterTrance" key="Trance" text="Trance"/>
+                                <core:Item id="filterDeepHouse" key="Deep House" text="Deep House"/>
+                                <core:Item id="filterHardstyle" key="Hardstyle" text="Hardstyle"/>
+                            </items>
+                        </Select>
+                        <Select id="countryFilter" 
+                            change="onFilterChange"
+                            forceSelection="false">
+                            <items>
+                                <core:Item id="filterAllCountries" key="" text="Alle Landen"/>
+                                <core:Item id="filterBelgium" key="Belgium" text="België"/>
+                                <core:Item id="filterNetherlands" key="Netherlands" text="Nederland"/>
+                            </items>
+                        </Select>
+                        <Select id="sortSelect" 
+                            change="onSortChange"
+                            forceSelection="true">
+                            <items>
+                                <core:Item id="sortNameAsc" key="name" text="Naam (A-Z)"/>
+                                <core:Item id="sortNameDesc" key="nameDesc" text="Naam (Z-A)"/>
+                                <core:Item id="sortPopAsc" key="popularity" text="Populariteit ↑"/>
+                                <core:Item id="sortPopDesc" key="popularityDesc" text="Populariteit ↓"/>
+                            </items>
+                        </Select>
                     </OverflowToolbar>
                 </headerToolbar>
                 <columns>

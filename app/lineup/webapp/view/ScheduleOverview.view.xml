@@ -35,11 +35,7 @@
                                 path: '/Performances',
                                 parameters: {
                                     $expand: 'artist,stage',
-                                    $filter: 'stage/name eq \'Main Stage\''
-                                },
-                                sorter: {
-                                    path: 'startTime',
-                                    descending: false
+                                    $orderby: 'startTime'
                                 }
                             }"
                             noDataText="Geen optredens gepland voor deze dag">
@@ -71,11 +67,7 @@
                                 path: '/Performances',
                                 parameters: {
                                     $expand: 'artist,stage',
-                                    $filter: 'stage/name eq \'Techno Temple\''
-                                },
-                                sorter: {
-                                    path: 'startTime',
-                                    descending: false
+                                    $orderby: 'startTime'
                                 }
                             }"
                             noDataText="Geen optredens gepland voor deze dag">
@@ -107,11 +99,7 @@
                                 path: '/Performances',
                                 parameters: {
                                     $expand: 'artist,stage',
-                                    $filter: 'stage/name eq \'Chill Garden\''
-                                },
-                                sorter: {
-                                    path: 'startTime',
-                                    descending: false
+                                    $orderby: 'startTime'
                                 }
                             }"
                             noDataText="Geen optredens gepland voor deze dag">

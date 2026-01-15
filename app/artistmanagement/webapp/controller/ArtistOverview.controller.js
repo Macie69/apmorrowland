@@ -2,10 +2,11 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
+    "sap/ui/model/Sorter",
     "sap/ui/core/Fragment",
     "sap/m/MessageToast",
     "sap/m/MessageBox"
-], function (Controller, Filter, FilterOperator, Fragment, MessageToast, MessageBox) {
+], function (Controller, Filter, FilterOperator, Sorter, Fragment, MessageToast, MessageBox) {
     "use strict";
 
     return Controller.extend("apmorrowland.artistmanagement.controller.ArtistOverview", {
@@ -14,18 +15,74 @@ sap.ui.define([
             // Initialisatie
         },
 
+        // ==================== FILTERING & SORTING ====================
+        
         // Zoekfunctie
         onSearch: function (oEvent) {
-            var sQuery = oEvent.getParameter("query");
+            this._applyFiltersAndSorting();
+        },
+
+        // Filter change (genre of country)
+        onFilterChange: function (oEvent) {
+            this._applyFiltersAndSorting();
+        },
+
+        // Sort change
+        onSortChange: function (oEvent) {
+            this._applyFiltersAndSorting();
+        },
+
+        _applyFiltersAndSorting: function () {
+            var oView = this.getView();
             var oTable = this.byId("artistsTable");
             var oBinding = oTable.getBinding("items");
             
+            // === FILTERS ===
             var aFilters = [];
-            if (sQuery) {
-                aFilters.push(new Filter("name", FilterOperator.Contains, sQuery));
+            
+            // Zoekfilter op naam
+            var sSearchQuery = oView.byId("searchField").getValue();
+            if (sSearchQuery) {
+                aFilters.push(new Filter("name", FilterOperator.Contains, sSearchQuery));
             }
             
+            // Genre filter
+            var sGenre = oView.byId("genreFilter").getSelectedKey();
+            if (sGenre) {
+                aFilters.push(new Filter("genre", FilterOperator.EQ, sGenre));
+            }
+            
+            // Country filter
+            var sCountry = oView.byId("countryFilter").getSelectedKey();
+            if (sCountry) {
+                aFilters.push(new Filter("country", FilterOperator.EQ, sCountry));
+            }
+            
+            // Apply filters
             oBinding.filter(aFilters);
+            
+            // === SORTING ===
+            var sSortKey = oView.byId("sortSelect").getSelectedKey();
+            var oSorter = null;
+            
+            switch (sSortKey) {
+                case "name":
+                    oSorter = new Sorter("name", false); // ascending
+                    break;
+                case "nameDesc":
+                    oSorter = new Sorter("name", true); // descending
+                    break;
+                case "popularity":
+                    oSorter = new Sorter("popularity", false); // ascending
+                    break;
+                case "popularityDesc":
+                    oSorter = new Sorter("popularity", true); // descending
+                    break;
+                default:
+                    oSorter = new Sorter("name", false);
+            }
+            
+            oBinding.sort(oSorter);
         },
 
         // Navigatie naar detail
