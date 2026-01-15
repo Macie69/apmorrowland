@@ -1,6 +1,97 @@
 <mvc:View controllerName="apmorrowland.leaderboard.controller.RankingOverview"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    height="100%">
+    
+    <Page id="leaderboardPage" title="Leaderboard">
+        <customHeader>
+            <Bar id="leaderboardHeader">
+                <contentMiddle>
+                    <Title id="leaderboardTitle" text="🏆 Artist Leaderboard"/>
+                </contentMiddle>
+                <contentRight>
+                    <Button id="refreshBtn" 
+                        icon="sap-icon://refresh" 
+                        tooltip="Vernieuw ranking"
+                        press="onRefresh"/>
+                </contentRight>
+            </Bar>
+        </customHeader>
+        
+        <subHeader>
+            <Toolbar id="filterToolbar">
+                <Label id="filterLabel" text="Filter op genre:"/>
+                <Select id="genreFilter" 
+                    change="onGenreFilter"
+                    forceSelection="false">
+                    <items>
+                        <core:Item id="itemAllGenres" key="" text="Alle Genres"/>
+                        <core:Item id="itemEDM" key="EDM" text="EDM"/>
+                        <core:Item id="itemTechno" key="Techno" text="Techno"/>
+                        <core:Item id="itemTrance" key="Trance" text="Trance"/>
+                        <core:Item id="itemDeepHouse" key="Deep House" text="Deep House"/>
+                        <core:Item id="itemHardstyle" key="Hardstyle" text="Hardstyle"/>
+                    </items>
+                </Select>
+                <ToolbarSpacer id="filterSpacer"/>
+            </Toolbar>
+        </subHeader>
+        
+        <content>
+            <Table id="leaderboardTable" 
+                items="{leaderboard>/artists}"
+                growing="true"
+                growingThreshold="20"
+                alternateRowColors="true">
+                <headerToolbar>
+                    <OverflowToolbar id="tableToolbar">
+                        <Title id="tableTitle" text="Top Artiesten"/>
+                        <ToolbarSpacer id="toolbarSpacer"/>
+                        <Label id="infoLabel" text="Gerangschikt op gemiddelde rating"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id="colRank" width="80px" hAlign="Center">
+                        <Text id="colRankText" text="Rank"/>
+                    </Column>
+                    <Column id="colArtist">
+                        <Text id="colArtistText" text="Artiest"/>
+                    </Column>
+                    <Column id="colGenre">
+                        <Text id="colGenreText" text="Genre"/>
+                    </Column>
+                    <Column id="colCountry">
+                        <Text id="colCountryText" text="Land"/>
+                    </Column>
+                    <Column id="colRating" hAlign="Center">
+                        <Text id="colRatingText" text="Gem. Rating"/>
+                    </Column>
+                    <Column id="colReviews" hAlign="Center">
+                        <Text id="colReviewsText" text="Reviews"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="leaderboardItem">
+                        <cells>
+                            <ObjectStatus id="cellRank" 
+                                text="#{leaderboard>rank}"
+                                icon="{path: 'leaderboard>rank', formatter: '.formatRankIcon'}"
+                                state="{path: 'leaderboard>rank', formatter: '.formatRankState'}"/>
+                            <Text id="cellArtist" text="{leaderboard>name}"/>
+                            <Text id="cellGenre" text="{leaderboard>genre}"/>
+                            <Text id="cellCountry" text="{leaderboard>country}"/>
+                            <ObjectNumber id="cellRating" 
+                                number="{leaderboard>averageRating}" 
+                                unit="/ 5"
+                                state="{path: 'leaderboard>averageRating', formatter: '.formatRatingState'}"/>
+                            <ObjectNumber id="cellReviews" 
+                                number="{leaderboard>reviewCount}"
+                                unit="reviews"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
     </Page>
 </mvc:View>

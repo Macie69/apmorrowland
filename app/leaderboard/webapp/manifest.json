@@ -12,8 +12,7 @@
     "resources": "resources.json",
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
-      "version": "1.20.0",
-      "toolsId": "d6956884-8b2f-405e-bdb3-35cc8b35c1b0"
+      "version": "1.20.0"
     },
     "dataSources": {
       "mainService": {
