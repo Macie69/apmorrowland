@@ -2,5 +2,58 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">
     <Page id="page" title="{i18n>title}">
+        <headerContent>
+            <Button 
+                id="addArtistBtn"
+                icon="sap-icon://add" 
+                text="Nieuwe Artiest" 
+                press="onAddArtist" 
+                type="Emphasized"/>
+        </headerContent>
+        <content>
+            <Table 
+                id="artistsTable"
+                items="{/Artists}"
+                growing="true"
+                growingThreshold="10"
+                mode="SingleSelectMaster"
+                itemPress="onArtistPress">
+                <headerToolbar>
+                    <OverflowToolbar id="tableToolbar">
+                        <Title id="tableTitle" text="Artiesten"/>
+                        <ToolbarSpacer id="toolbarSpacer"/>
+                        <SearchField 
+                            id="searchField"
+                            width="300px" 
+                            search="onSearch" 
+                            placeholder="Zoek op naam..."/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <columns>
+                    <Column id="colName">
+                        <Text id="colNameText" text="Naam"/>
+                    </Column>
+                    <Column id="colGenre">
+                        <Text id="colGenreText" text="Genre"/>
+                    </Column>
+                    <Column id="colCountry">
+                        <Text id="colCountryText" text="Land"/>
+                    </Column>
+                    <Column id="colPopularity">
+                        <Text id="colPopularityText" text="Populariteit"/>
+                    </Column>
+                </columns>
+                <items>
+                    <ColumnListItem id="artistListItem" type="Navigation">
+                        <cells>
+                            <Text id="cellName" text="{name}"/>
+                            <Text id="cellGenre" text="{genre}"/>
+                            <Text id="cellCountry" text="{country}"/>
+                            <ObjectNumber id="cellPopularity" number="{popularity}" unit="/100"/>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
     </Page>
 </mvc:View>
