@@ -14,7 +14,8 @@
     "start": "cds-serve",
     "watch-artistmanagement": "cds watch --open apmorrowland.artistmanagement/index.html?sap-ui-xx-viewCache=false --livereload false",
     "watch-ordermanagement": "cds watch --open apmorrowland.ordermanagement/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-lineup": "cds watch --open apmorrowland.lineup/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-lineup": "cds watch --open apmorrowland.lineup/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-leaderboard": "cds watch --open apmorrowland.leaderboard/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
