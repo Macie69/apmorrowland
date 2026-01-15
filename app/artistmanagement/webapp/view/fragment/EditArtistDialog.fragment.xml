@@ -1,0 +1,55 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
+    
+    <Dialog id="editArtistDialog" title="Artiest Bewerken">
+        <content>
+            <form:SimpleForm id="editArtistForm"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="4"
+                labelSpanL="4"
+                labelSpanM="4"
+                labelSpanS="12"
+                emptySpanXL="0"
+                emptySpanL="0"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1">
+                <form:content>
+                    <Label id="editLabelName" text="Naam" required="true"/>
+                    <Input id="editInputName" value="{name}"/>
+                    
+                    <Label id="editLabelGenre" text="Genre" required="true"/>
+                    <Select id="editSelectGenre" selectedKey="{genre}">
+                        <items>
+                            <core:Item id="editItemEDM" key="EDM" text="EDM"/>
+                            <core:Item id="editItemTechno" key="Techno" text="Techno"/>
+                            <core:Item id="editItemTrance" key="Trance" text="Trance"/>
+                            <core:Item id="editItemDeepHouse" key="Deep House" text="Deep House"/>
+                            <core:Item id="editItemHardstyle" key="Hardstyle" text="Hardstyle"/>
+                        </items>
+                    </Select>
+                    
+                    <Label id="editLabelCountry" text="Land" required="true"/>
+                    <Input id="editInputCountry" value="{country}"/>
+                    
+                    <Label id="editLabelDescription" text="Beschrijving"/>
+                    <TextArea id="editInputDescription" rows="3" value="{description}"/>
+                    
+                    <Label id="editLabelPopularity" text="Populariteit (0-100)"/>
+                    <Slider id="editSliderPopularity" min="0" max="100" value="{popularity}" enableTickmarks="true" showAdvancedTooltip="true"/>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button id="btnSaveEditArtist" text="Opslaan" type="Emphasized" press=".onSaveEditArtist"/>
+        </beginButton>
+        <endButton>
+            <Button id="btnCancelEditArtist" text="Annuleren" press=".onCancelEditArtist"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

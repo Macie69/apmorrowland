@@ -1,0 +1,34 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
+    
+    <Dialog id="addReviewDialog" title="Review Toevoegen">
+        <content>
+            <form:SimpleForm id="addReviewForm"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="4"
+                labelSpanL="4"
+                labelSpanM="4"
+                labelSpanS="12">
+                <form:content>
+                    <Label id="labelReviewerName" text="Je naam" required="true"/>
+                    <Input id="inputReviewerName" placeholder="Jouw naam"/>
+                    
+                    <Label id="labelRating" text="Rating" required="true"/>
+                    <RatingIndicator id="inputRating" maxValue="5" value="3" iconSize="1.5rem"/>
+                    
+                    <Label id="labelComment" text="Comment"/>
+                    <TextArea id="inputComment" rows="3" placeholder="Wat vond je van de artiest?"/>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button id="btnSaveReview" text="Opslaan" type="Emphasized" press=".onSaveReview"/>
+        </beginButton>
+        <endButton>
+            <Button id="btnCancelReview" text="Annuleren" press=".onCancelAddReview"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

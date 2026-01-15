@@ -1,0 +1,55 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
+    
+    <Dialog id="addArtistDialog" title="Nieuwe Artiest Toevoegen">
+        <content>
+            <form:SimpleForm id="addArtistForm"
+                editable="true"
+                layout="ResponsiveGridLayout"
+                labelSpanXL="4"
+                labelSpanL="4"
+                labelSpanM="4"
+                labelSpanS="12"
+                emptySpanXL="0"
+                emptySpanL="0"
+                emptySpanM="0"
+                emptySpanS="0"
+                columnsXL="1"
+                columnsL="1"
+                columnsM="1">
+                <form:content>
+                    <Label id="labelName" text="Naam" required="true"/>
+                    <Input id="inputName" placeholder="Artiest naam"/>
+                    
+                    <Label id="labelGenre" text="Genre" required="true"/>
+                    <Select id="selectGenre">
+                        <items>
+                            <core:Item id="itemEDM" key="EDM" text="EDM"/>
+                            <core:Item id="itemTechno" key="Techno" text="Techno"/>
+                            <core:Item id="itemTrance" key="Trance" text="Trance"/>
+                            <core:Item id="itemDeepHouse" key="Deep House" text="Deep House"/>
+                            <core:Item id="itemHardstyle" key="Hardstyle" text="Hardstyle"/>
+                        </items>
+                    </Select>
+                    
+                    <Label id="labelCountry" text="Land" required="true"/>
+                    <Input id="inputCountry" placeholder="Land van herkomst"/>
+                    
+                    <Label id="labelDescription" text="Beschrijving"/>
+                    <TextArea id="inputDescription" rows="3" placeholder="Biografie"/>
+                    
+                    <Label id="labelPopularity" text="Populariteit (0-100)"/>
+                    <Slider id="sliderPopularity" min="0" max="100" value="50" enableTickmarks="true" showAdvancedTooltip="true"/>
+                </form:content>
+            </form:SimpleForm>
+        </content>
+        <beginButton>
+            <Button id="btnSaveArtist" text="Opslaan" type="Emphasized" press=".onSaveArtist"/>
+        </beginButton>
+        <endButton>
+            <Button id="btnCancelArtist" text="Annuleren" press=".onCancelAddArtist"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

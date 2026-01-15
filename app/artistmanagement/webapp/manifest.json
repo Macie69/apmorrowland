@@ -95,15 +95,22 @@
         {
           "name": "RouteArtistOverview",
           "pattern": ":?query:",
-          "target": [
-            "TargetArtistOverview"
-          ]
+          "target": ["TargetArtistOverview"]
+        },
+        {
+          "name": "RouteArtistDetail",
+          "pattern": "artist/{artistId}",
+          "target": ["TargetArtistDetail"]
         }
       ],
       "targets": {
         "TargetArtistOverview": {
           "id": "ArtistOverview",
           "name": "ArtistOverview"
+        },
+        "TargetArtistDetail": {
+          "id": "ArtistDetail",
+          "name": "ArtistDetail"
         }
       }
     },

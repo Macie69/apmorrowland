@@ -1,0 +1,80 @@
+<mvc:View controllerName="apmorrowland.artistmanagement.controller.ArtistDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page id="detailPage" 
+          title="{name}" 
+          showNavButton="true" 
+          navButtonPress="onNavBack">
+        
+        <!-- Header Toolbar met Edit en Delete -->
+        <customHeader>
+            <Bar id="headerBar">
+                <contentLeft>
+                    <Button id="navBackBtn" icon="sap-icon://nav-back" press="onNavBack"/>
+                </contentLeft>
+                <contentMiddle>
+                    <Title id="pageTitle" text="{name}"/>
+                </contentMiddle>
+                <contentRight>
+                    <Button id="editBtn" icon="sap-icon://edit" text="Bewerken" press="onEditArtist" type="Emphasized"/>
+                    <Button id="deleteBtn" icon="sap-icon://delete" text="Verwijderen" press="onDeleteArtist" type="Reject"/>
+                </contentRight>
+            </Bar>
+        </customHeader>
+        
+        <content>
+            <!-- Artiest Info -->
+            <ObjectHeader id="artistHeader"
+                title="{name}"
+                number="{popularity}"
+                numberUnit="/100">
+                <attributes>
+                    <ObjectAttribute id="attrGenre" title="Genre" text="{genre}"/>
+                    <ObjectAttribute id="attrCountry" title="Land" text="{country}"/>
+                </attributes>
+            </ObjectHeader>
+            
+            <!-- Beschrijving -->
+            <Panel id="descriptionPanel" headerText="Biografie">
+                <content>
+                    <Text id="descriptionText" text="{description}"/>
+                </content>
+            </Panel>
+            
+            <!-- Performances -->
+            <Panel id="performancesPanel" headerText="Optredens">
+                <content>
+                    <List id="performancesList" items="{performances}">
+                        <StandardListItem id="performanceItem"
+                            title="{stage/name}"
+                            description="{festivalDay}"
+                            info="{startTime} - {endTime}"/>
+                    </List>
+                </content>
+            </Panel>
+            
+            <!-- Reviews -->
+            <Panel id="reviewsPanel" headerText="Reviews">
+                <headerToolbar>
+                    <OverflowToolbar id="reviewsToolbar">
+                        <Title id="reviewsTitle" text="Reviews"/>
+                        <ToolbarSpacer id="reviewsSpacer"/>
+                        <Button id="addReviewBtn" 
+                            icon="sap-icon://add" 
+                            text="Review Toevoegen" 
+                            press="onAddReview"
+                            type="Emphasized"/>
+                    </OverflowToolbar>
+                </headerToolbar>
+                <content>
+                    <List id="reviewsList" items="{reviews}">
+                        <StandardListItem id="reviewItem"
+                            title="{ReviewerName}"
+                            description="{comment}"
+                            info="Rating: {rating}/5"/>
+                    </List>
+                </content>
+            </Panel>
+        </content>
+    </Page>
+</mvc:View>
