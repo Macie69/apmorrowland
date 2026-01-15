@@ -1,0 +1,135 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form">
+    
+    <Dialog id="orderWizardDialog" 
+        title="Nieuwe Order" 
+        contentWidth="900px" 
+        contentHeight="600px">
+        <content>
+            <Wizard id="orderWizard" 
+                complete="onWizardComplete"
+                enableBranching="false">
+                
+                <!-- STEP 1: Select Customer -->
+                <WizardStep id="stepCustomer" 
+                    title="Klant Selecteren"
+                    icon="sap-icon://person-placeholder"
+                    validated="false">
+                    <Text id="stepCustomerText" text="Selecteer een klant voor deze bestelling:" class="sapUiSmallMarginBottom"/>
+                    <List id="customerList" 
+                        items="{/Customers}"
+                        mode="SingleSelectMaster"
+                        selectionChange="onCustomerSelect">
+                        <StandardListItem id="customerListItem"
+                            title="{firstName} {lastName}"
+                            description="{email}"
+                            icon="sap-icon://customer"
+                            type="Active"/>
+                    </List>
+                </WizardStep>
+                
+                <!-- STEP 2: Select Order Type -->
+                <WizardStep id="stepType" 
+                    title="Type Bestelling"
+                    icon="sap-icon://product"
+                    validated="false">
+                    <Text id="stepTypeText" text="Wat wil de klant bestellen?" class="sapUiSmallMarginBottom"/>
+                    <HBox id="typeSelectionBox" justifyContent="Center" wrap="Wrap">
+                        <VBox id="ticketBox" alignItems="Center" class="sapUiMediumMargin">
+                            <Button id="btnTypeTicket" 
+                                icon="sap-icon://ticket" 
+                                text="Tickets"
+                                type="Emphasized"
+                                width="150px"
+                                press="onTypeTicket"/>
+                        </VBox>
+                        <VBox id="merchBox" alignItems="Center" class="sapUiMediumMargin">
+                            <Button id="btnTypeMerch" 
+                                icon="sap-icon://retail-store" 
+                                text="Merchandise"
+                                type="Emphasized"
+                                width="150px"
+                                press="onTypeMerchandise"/>
+                        </VBox>
+                        <VBox id="foodBox" alignItems="Center" class="sapUiMediumMargin">
+                            <Button id="btnTypeFoodDrinks" 
+                                icon="sap-icon://meal" 
+                                text="Food &amp; Drinks"
+                                type="Emphasized"
+                                width="150px"
+                                press="onTypeFoodDrinks"/>
+                        </VBox>
+                    </HBox>
+                </WizardStep>
+                
+                <!-- STEP 3: Select Items -->
+                <WizardStep id="stepItems" 
+                    title="Items Selecteren"
+                    icon="sap-icon://cart"
+                    validated="false">
+                    <HBox id="itemsContainer">
+                        <VBox id="productsBox" width="50%" class="sapUiSmallMarginEnd">
+                            <Toolbar id="productsToolbar">
+                                <Title id="productsTitle" text="Beschikbare Producten"/>
+                            </Toolbar>
+                            <List id="productList" items="{/Products}">
+                                <StandardListItem id="productListItem"
+                                    title="{name}"
+                                    description="€{price}"
+                                    icon="sap-icon://product"
+                                    type="Active"
+                                    press="onAddItem"/>
+                            </List>
+                        </VBox>
+                        
+                        <VBox id="selectedBox" width="50%">
+                            <Toolbar id="selectedToolbar">
+                                <Title id="selectedTitle" text="Geselecteerde Items"/>
+                            </Toolbar>
+                            <List id="selectedItemsList" noDataText="Nog geen items geselecteerd"/>
+                            <Toolbar id="totalToolbar">
+                                <ToolbarSpacer id="totalSpacer"/>
+                                <Label id="totalLabel" text="Totaal:"/>
+                                <ObjectNumber id="wizardTotalAmount" number="0.00" unit="EUR" emphasized="true"/>
+                            </Toolbar>
+                        </VBox>
+                    </HBox>
+                </WizardStep>
+                
+                <!-- STEP 4: Review & Confirm -->
+                <WizardStep id="stepConfirm" 
+                    title="Bevestigen"
+                    icon="sap-icon://accept">
+                    <Panel id="summaryPanel" headerText="Order Samenvatting">
+                        <content>
+                            <form:SimpleForm id="summaryForm" editable="false" layout="ResponsiveGridLayout">
+                                <form:content>
+                                    <Label id="labelSummaryCustomer" text="Klant"/>
+                                    <Text id="summaryCustomer"/>
+                                    
+                                    <Label id="labelSummaryType" text="Type"/>
+                                    <Text id="summaryType"/>
+                                    
+                                    <Label id="labelSummaryItems" text="Items"/>
+                                    <List id="summaryItemsList"/>
+                                    
+                                    <Label id="labelSummaryTotal" text="Totaal"/>
+                                    <ObjectNumber id="summaryTotal" unit="EUR" emphasized="true" state="Success"/>
+                                </form:content>
+                            </form:SimpleForm>
+                        </content>
+                    </Panel>
+                </WizardStep>
+                
+            </Wizard>
+        </content>
+        <beginButton>
+            <Button id="btnConfirmOrder" text="Order Plaatsen" type="Emphasized" press="onConfirmOrder"/>
+        </beginButton>
+        <endButton>
+            <Button id="btnCancelWizard" text="Annuleren" press="onCancelWizard"/>
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

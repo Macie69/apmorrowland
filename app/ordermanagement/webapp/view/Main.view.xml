@@ -1,6 +1,204 @@
 <mvc:View controllerName="apmorrowland.ordermanagement.controller.Main"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-    </Page>
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    height="100%">
+    
+    <f:FlexibleColumnLayout id="fcl" layout="OneColumn">
+        
+        <!-- BEGIN COLUMN: Order List -->
+        <f:beginColumnPages>
+            <Page id="orderListPage" title="Order Management">
+                <customHeader>
+                    <Bar id="orderListHeader">
+                        <contentMiddle>
+                            <Title id="orderListTitle" text="Bestellingen"/>
+                        </contentMiddle>
+                        <contentRight>
+                            <Button id="newOrderBtn" 
+                                text="Nieuwe Order" 
+                                icon="sap-icon://add" 
+                                type="Emphasized" 
+                                press="onNewOrder"/>
+                        </contentRight>
+                    </Bar>
+                </customHeader>
+                <subHeader>
+                    <Toolbar id="filterToolbar">
+                        <SearchField id="searchField" 
+                            placeholder="Zoek op klantnaam..." 
+                            search="onSearch" 
+                            width="300px"/>
+                        <ToolbarSpacer id="spacer1"/>
+                        <Select id="statusFilter" 
+                            change="onFilterChange"
+                            forceSelection="false">
+                            <items>
+                                <core:Item id="itemAllStatus" key="" text="Alle Statussen"/>
+                                <core:Item id="itemOpen" key="Open" text="Open"/>
+                                <core:Item id="itemPaid" key="Paid" text="Betaald"/>
+                                <core:Item id="itemCancelled" key="Cancelled" text="Geannuleerd"/>
+                            </items>
+                        </Select>
+                        <Select id="typeFilter" 
+                            change="onFilterChange"
+                            forceSelection="false">
+                            <items>
+                                <core:Item id="itemAllTypes" key="" text="Alle Types"/>
+                                <core:Item id="itemTicket" key="Ticket" text="Tickets"/>
+                                <core:Item id="itemMerchandise" key="Merchandise" text="Merchandise"/>
+                                <core:Item id="itemFoodDrinks" key="FoodDrinks" text="Food &amp; Drinks"/>
+                            </items>
+                        </Select>
+                    </Toolbar>
+                </subHeader>
+                <content>
+                    <Table id="ordersTable" 
+                        items="{
+                            path: '/Orders',
+                            parameters: {
+                                $expand: 'customer'
+                            },
+                            sorter: {
+                                path: 'orderDate',
+                                descending: true
+                            }
+                        }"
+                        mode="SingleSelectMaster"
+                        selectionChange="onOrderSelect">
+                        <columns>
+                            <Column id="colDate">
+                                <Text id="colDateText" text="Datum"/>
+                            </Column>
+                            <Column id="colCustomer">
+                                <Text id="colCustomerText" text="Klant"/>
+                            </Column>
+                            <Column id="colType">
+                                <Text id="colTypeText" text="Type"/>
+                            </Column>
+                            <Column id="colStatus">
+                                <Text id="colStatusText" text="Status"/>
+                            </Column>
+                            <Column id="colTotal" hAlign="End">
+                                <Text id="colTotalText" text="Totaal"/>
+                            </Column>
+                        </columns>
+                        <items>
+                            <ColumnListItem id="orderListItem" type="Active">
+                                <cells>
+                                    <Text id="cellDate" text="{
+                                        path: 'orderDate',
+                                        type: 'sap.ui.model.type.Date',
+                                        formatOptions: { style: 'medium' }
+                                    }"/>
+                                    <Text id="cellCustomer" text="{customer/firstName} {customer/lastName}"/>
+                                    <Text id="cellType" text="{orderType}"/>
+                                    <ObjectStatus id="cellStatus" 
+                                        text="{status}" 
+                                        state="{= ${status} === 'Paid' ? 'Success' : (${status} === 'Cancelled' ? 'Error' : 'Warning')}"/>
+                                    <ObjectNumber id="cellTotal" 
+                                        number="{totalAmount}" 
+                                        unit="EUR"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </content>
+            </Page>
+        </f:beginColumnPages>
+        
+        <!-- MID COLUMN: Order Detail -->
+        <f:midColumnPages>
+            <Page id="orderDetailPage" 
+                title="Order Details"
+                showNavButton="true"
+                navButtonPress="onCloseDetail">
+                <content>
+                    <ObjectHeader id="orderHeader"
+                        title="Order"
+                        number="{totalAmount}"
+                        numberUnit="EUR">
+                        <statuses>
+                            <ObjectStatus id="orderStatusIndicator" 
+                                text="{status}" 
+                                state="{= ${status} === 'Paid' ? 'Success' : (${status} === 'Cancelled' ? 'Error' : 'Warning')}"/>
+                        </statuses>
+                        <attributes>
+                            <ObjectAttribute id="attrCustomer" title="Klant" text="{customer/firstName} {customer/lastName}"/>
+                            <ObjectAttribute id="attrEmail" title="Email" text="{customer/email}"/>
+                            <ObjectAttribute id="attrDate" title="Datum" text="{
+                                path: 'orderDate',
+                                type: 'sap.ui.model.type.Date',
+                                formatOptions: { style: 'long' }
+                            }"/>
+                            <ObjectAttribute id="attrType" title="Type" text="{orderType}"/>
+                        </attributes>
+                    </ObjectHeader>
+                    
+                    <Panel id="itemsPanel" headerText="Bestelde Items">
+                        <content>
+                            <Table id="orderItemsTable" items="{items}">
+                                <columns>
+                                    <Column id="colItemProduct">
+                                        <Text id="colItemProductText" text="Product"/>
+                                    </Column>
+                                    <Column id="colItemQty" hAlign="Center">
+                                        <Text id="colItemQtyText" text="Aantal"/>
+                                    </Column>
+                                    <Column id="colItemPrice" hAlign="End">
+                                        <Text id="colItemPriceText" text="Prijs"/>
+                                    </Column>
+                                    <Column id="colItemSubtotal" hAlign="End">
+                                        <Text id="colItemSubtotalText" text="Subtotaal"/>
+                                    </Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem id="orderItemRow">
+                                        <cells>
+                                            <Text id="cellItemProduct" text="{product/name}"/>
+                                            <Text id="cellItemQty" text="{quantity}"/>
+                                            <ObjectNumber id="cellItemPrice" number="{unitPrice}" unit="EUR"/>
+                                            <ObjectNumber id="cellItemSubtotal" number="{subtotal}" unit="EUR" emphasized="true"/>
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </content>
+                    </Panel>
+                    
+                    <Panel id="totalPanel" headerText="Totaal">
+                        <content>
+                            <HBox id="totalBox" justifyContent="End" class="sapUiMediumMargin">
+                                <ObjectNumber id="grandTotal" 
+                                    number="{totalAmount}" 
+                                    unit="EUR" 
+                                    emphasized="true"
+                                    state="Success"/>
+                            </HBox>
+                        </content>
+                    </Panel>
+                </content>
+                
+                <footer>
+                    <OverflowToolbar id="detailFooter">
+                        <ToolbarSpacer id="footerSpacer"/>
+                        <Button id="btnMarkPaid" 
+                            text="Markeer Betaald" 
+                            type="Accept" 
+                            icon="sap-icon://accept"
+                            press="onMarkPaid"
+                            visible="{= ${status} === 'Open'}"/>
+                        <Button id="btnCancelOrder" 
+                            text="Annuleren" 
+                            type="Reject" 
+                            icon="sap-icon://decline"
+                            press="onCancelOrder"
+                            visible="{= ${status} === 'Open'}"/>
+                    </OverflowToolbar>
+                </footer>
+            </Page>
+        </f:midColumnPages>
+        
+    </f:FlexibleColumnLayout>
 </mvc:View>
