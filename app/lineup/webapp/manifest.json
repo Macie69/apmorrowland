@@ -93,17 +93,17 @@
       },
       "routes": [
         {
-          "name": "RouteMain",
+          "name": "RouteScheduleOverview",
           "pattern": ":?query:",
           "target": [
-            "TargetMain"
+            "TargetScheduleOverview"
           ]
         }
       ],
       "targets": {
-        "TargetMain": {
-          "id": "Main",
-          "name": "Main"
+        "TargetScheduleOverview": {
+          "id": "ScheduleOverview",
+          "name": "ScheduleOverview"
         }
       }
     },

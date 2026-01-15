@@ -61,27 +61,42 @@ sap.ui.define([
 
         onSaveArtist: function () {
             var oView = this.getView();
+            
+            // Artiest gegevens
             var sName = oView.byId("inputName").getValue();
             var sGenre = oView.byId("selectGenre").getSelectedKey();
             var sCountry = oView.byId("inputCountry").getValue();
             var sDescription = oView.byId("inputDescription").getValue();
             var iPopularity = oView.byId("sliderPopularity").getValue();
 
-            // Validatie
+            // Performance gegevens
+            var sStageId = oView.byId("selectStage").getSelectedKey();
+            var sFestivalDay = oView.byId("inputFestivalDay").getValue();
+            var sStartTime = oView.byId("inputStartTime").getValue();
+            var sEndTime = oView.byId("inputEndTime").getValue();
+
+            // Validatie - Artiest
             if (!sName || !sCountry) {
                 MessageBox.error("Vul alle verplichte velden in (Naam en Land)");
                 return;
             }
 
-            // Genereer UUID
-            var sUUID = this._generateUUID();
+            // Validatie - Performance
+            if (!sStageId || !sFestivalDay || !sStartTime || !sEndTime) {
+                MessageBox.error("Vul alle performance velden in (Stage, Dag, Start- en Eindtijd)");
+                return;
+            }
 
-            // Maak nieuwe artiest aan
+            // Genereer UUIDs
+            var sArtistUUID = this._generateUUID();
+            var sPerformanceUUID = this._generateUUID();
+
             var oModel = this.getView().getModel();
-            var oListBinding = oModel.bindList("/Artists");
             
-            oListBinding.create({
-                ID: sUUID,
+            // 1. Maak nieuwe artiest aan
+            var oArtistBinding = oModel.bindList("/Artists");
+            oArtistBinding.create({
+                ID: sArtistUUID,
                 name: sName,
                 genre: sGenre,
                 country: sCountry,
@@ -89,7 +104,18 @@ sap.ui.define([
                 popularity: iPopularity
             });
 
-            MessageToast.show("Artiest " + sName + " toegevoegd!");
+            // 2. Maak performance aan
+            var oPerformanceBinding = oModel.bindList("/Performances");
+            oPerformanceBinding.create({
+                ID: sPerformanceUUID,
+                artist_ID: sArtistUUID,
+                stage_ID: sStageId,
+                festivalDay: sFestivalDay,
+                startTime: sStartTime,
+                endTime: sEndTime
+            });
+
+            MessageToast.show("Artiest " + sName + " toegevoegd met optreden!");
             this._clearAddDialog();
             oView.byId("addArtistDialog").close();
         },
@@ -101,11 +127,28 @@ sap.ui.define([
 
         _clearAddDialog: function () {
             var oView = this.getView();
+            
+            // Clear artiest velden
             oView.byId("inputName").setValue("");
             oView.byId("selectGenre").setSelectedKey("EDM");
             oView.byId("inputCountry").setValue("");
             oView.byId("inputDescription").setValue("");
             oView.byId("sliderPopularity").setValue(50);
+            
+            // Clear performance velden
+            var oStageSelect = oView.byId("selectStage");
+            if (oStageSelect.getItems().length > 0) {
+                oStageSelect.setSelectedKey(oStageSelect.getItems()[0].getKey());
+            }
+            oView.byId("inputFestivalDay").setValue("");
+            oView.byId("inputStartTime").setValue("");
+            oView.byId("inputEndTime").setValue("");
+            
+            // Reset naar eerste tab
+            var oTabBar = oView.byId("addArtistTabBar");
+            if (oTabBar) {
+                oTabBar.setSelectedKey("tabArtistInfo");
+            }
         },
 
         _generateUUID: function () {

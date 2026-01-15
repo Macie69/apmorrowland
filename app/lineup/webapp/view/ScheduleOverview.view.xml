@@ -1,0 +1,139 @@
+<mvc:View controllerName="apmorrowland.lineup.controller.ScheduleOverview"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    height="100%">
+    
+    <Page id="lineupPage" title="Line-up &amp; Planning">
+        <customHeader>
+            <Bar id="lineupHeader">
+                <contentMiddle>
+                    <Title id="lineupTitle" text="Festival Line-up"/>
+                </contentMiddle>
+                <contentRight>
+                    <Select id="daySelect" 
+                        change="onDayChange"
+                        forceSelection="true">
+                    </Select>
+                </contentRight>
+            </Bar>
+        </customHeader>
+        
+        <content>
+            <IconTabBar id="stagesTabBar" 
+                expanded="true"
+                stretchContentHeight="true">
+                
+                <!-- Main Stage Tab -->
+                <items>
+                    <IconTabFilter id="tabMainStage" 
+                        text="Main Stage" 
+                        icon="sap-icon://theater"
+                        key="mainStage">
+                        <List id="mainStageList"
+                            items="{
+                                path: '/Performances',
+                                parameters: {
+                                    $expand: 'artist,stage',
+                                    $filter: 'stage/name eq \'Main Stage\''
+                                },
+                                sorter: {
+                                    path: 'startTime',
+                                    descending: false
+                                }
+                            }"
+                            noDataText="Geen optredens gepland voor deze dag">
+                            <ObjectListItem id="mainStageItem"
+                                title="{artist/name}"
+                                number="{path: 'startTime', formatter: '.formatTime'}"
+                                numberUnit="- {path: 'endTime', formatter: '.formatTime'}"
+                                type="Active">
+                                <attributes>
+                                    <ObjectAttribute id="mainStageGenre" text="{artist/genre}"/>
+                                    <ObjectAttribute id="mainStageCountry" text="{artist/country}"/>
+                                </attributes>
+                                <firstStatus>
+                                    <ObjectStatus id="mainStageStatus" 
+                                        text="{stage/name}" 
+                                        state="Success"/>
+                                </firstStatus>
+                            </ObjectListItem>
+                        </List>
+                    </IconTabFilter>
+                    
+                    <!-- Techno Temple Tab -->
+                    <IconTabFilter id="tabTechnoTemple" 
+                        text="Techno Temple" 
+                        icon="sap-icon://sound-loud"
+                        key="technoTemple">
+                        <List id="technoTempleList"
+                            items="{
+                                path: '/Performances',
+                                parameters: {
+                                    $expand: 'artist,stage',
+                                    $filter: 'stage/name eq \'Techno Temple\''
+                                },
+                                sorter: {
+                                    path: 'startTime',
+                                    descending: false
+                                }
+                            }"
+                            noDataText="Geen optredens gepland voor deze dag">
+                            <ObjectListItem id="technoTempleItem"
+                                title="{artist/name}"
+                                number="{path: 'startTime', formatter: '.formatTime'}"
+                                numberUnit="- {path: 'endTime', formatter: '.formatTime'}"
+                                type="Active">
+                                <attributes>
+                                    <ObjectAttribute id="technoGenre" text="{artist/genre}"/>
+                                    <ObjectAttribute id="technoCountry" text="{artist/country}"/>
+                                </attributes>
+                                <firstStatus>
+                                    <ObjectStatus id="technoStatus" 
+                                        text="{stage/name}" 
+                                        state="Warning"/>
+                                </firstStatus>
+                            </ObjectListItem>
+                        </List>
+                    </IconTabFilter>
+                    
+                    <!-- Chill Garden Tab -->
+                    <IconTabFilter id="tabChillGarden" 
+                        text="Chill Garden" 
+                        icon="sap-icon://tree"
+                        key="chillGarden">
+                        <List id="chillGardenList"
+                            items="{
+                                path: '/Performances',
+                                parameters: {
+                                    $expand: 'artist,stage',
+                                    $filter: 'stage/name eq \'Chill Garden\''
+                                },
+                                sorter: {
+                                    path: 'startTime',
+                                    descending: false
+                                }
+                            }"
+                            noDataText="Geen optredens gepland voor deze dag">
+                            <ObjectListItem id="chillGardenItem"
+                                title="{artist/name}"
+                                number="{path: 'startTime', formatter: '.formatTime'}"
+                                numberUnit="- {path: 'endTime', formatter: '.formatTime'}"
+                                type="Active">
+                                <attributes>
+                                    <ObjectAttribute id="chillGenre" text="{artist/genre}"/>
+                                    <ObjectAttribute id="chillCountry" text="{artist/country}"/>
+                                </attributes>
+                                <firstStatus>
+                                    <ObjectStatus id="chillStatus" 
+                                        text="{stage/name}" 
+                                        state="Information"/>
+                                </firstStatus>
+                            </ObjectListItem>
+                        </List>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+    </Page>
+</mvc:View>

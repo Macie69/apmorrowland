@@ -5,45 +5,97 @@
     
     <Dialog id="addArtistDialog" title="Nieuwe Artiest Toevoegen">
         <content>
-            <form:SimpleForm id="addArtistForm"
-                editable="true"
-                layout="ResponsiveGridLayout"
-                labelSpanXL="4"
-                labelSpanL="4"
-                labelSpanM="4"
-                labelSpanS="12"
-                emptySpanXL="0"
-                emptySpanL="0"
-                emptySpanM="0"
-                emptySpanS="0"
-                columnsXL="1"
-                columnsL="1"
-                columnsM="1">
-                <form:content>
-                    <Label id="labelName" text="Naam" required="true"/>
-                    <Input id="inputName" placeholder="Artiest naam"/>
+            <IconTabBar id="addArtistTabBar" expanded="true">
+                <!-- Tab 1: Artiest Info -->
+                <items>
+                    <IconTabFilter id="tabArtistInfo" text="Artiest Info" icon="sap-icon://person-placeholder">
+                        <form:SimpleForm id="addArtistForm"
+                            editable="true"
+                            layout="ResponsiveGridLayout"
+                            labelSpanXL="4"
+                            labelSpanL="4"
+                            labelSpanM="4"
+                            labelSpanS="12"
+                            emptySpanXL="0"
+                            emptySpanL="0"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="1"
+                            columnsL="1"
+                            columnsM="1">
+                            <form:content>
+                                <Label id="labelName" text="Naam" required="true"/>
+                                <Input id="inputName" placeholder="Artiest naam"/>
+                                
+                                <Label id="labelGenre" text="Genre" required="true"/>
+                                <Select id="selectGenre">
+                                    <items>
+                                        <core:Item id="itemEDM" key="EDM" text="EDM"/>
+                                        <core:Item id="itemTechno" key="Techno" text="Techno"/>
+                                        <core:Item id="itemTrance" key="Trance" text="Trance"/>
+                                        <core:Item id="itemDeepHouse" key="Deep House" text="Deep House"/>
+                                        <core:Item id="itemHardstyle" key="Hardstyle" text="Hardstyle"/>
+                                    </items>
+                                </Select>
+                                
+                                <Label id="labelCountry" text="Land" required="true"/>
+                                <Input id="inputCountry" placeholder="Land van herkomst"/>
+                                
+                                <Label id="labelDescription" text="Beschrijving"/>
+                                <TextArea id="inputDescription" rows="3" placeholder="Biografie"/>
+                                
+                                <Label id="labelPopularity" text="Populariteit (0-100)"/>
+                                <Slider id="sliderPopularity" min="0" max="100" value="50" enableTickmarks="true" showAdvancedTooltip="true"/>
+                            </form:content>
+                        </form:SimpleForm>
+                    </IconTabFilter>
                     
-                    <Label id="labelGenre" text="Genre" required="true"/>
-                    <Select id="selectGenre">
-                        <items>
-                            <core:Item id="itemEDM" key="EDM" text="EDM"/>
-                            <core:Item id="itemTechno" key="Techno" text="Techno"/>
-                            <core:Item id="itemTrance" key="Trance" text="Trance"/>
-                            <core:Item id="itemDeepHouse" key="Deep House" text="Deep House"/>
-                            <core:Item id="itemHardstyle" key="Hardstyle" text="Hardstyle"/>
-                        </items>
-                    </Select>
-                    
-                    <Label id="labelCountry" text="Land" required="true"/>
-                    <Input id="inputCountry" placeholder="Land van herkomst"/>
-                    
-                    <Label id="labelDescription" text="Beschrijving"/>
-                    <TextArea id="inputDescription" rows="3" placeholder="Biografie"/>
-                    
-                    <Label id="labelPopularity" text="Populariteit (0-100)"/>
-                    <Slider id="sliderPopularity" min="0" max="100" value="50" enableTickmarks="true" showAdvancedTooltip="true"/>
-                </form:content>
-            </form:SimpleForm>
+                    <!-- Tab 2: Performance Planning -->
+                    <IconTabFilter id="tabPerformance" text="Optreden Plannen" icon="sap-icon://calendar">
+                        <form:SimpleForm id="performanceForm"
+                            editable="true"
+                            layout="ResponsiveGridLayout"
+                            labelSpanXL="4"
+                            labelSpanL="4"
+                            labelSpanM="4"
+                            labelSpanS="12"
+                            emptySpanXL="0"
+                            emptySpanL="0"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="1"
+                            columnsL="1"
+                            columnsM="1">
+                            <form:content>
+                                <Label id="labelStage" text="Stage" required="true"/>
+                                <Select id="selectStage" items="{/Stages}">
+                                    <items>
+                                        <core:Item id="stageItem" key="{ID}" text="{name}"/>
+                                    </items>
+                                </Select>
+                                
+                                <Label id="labelFestivalDay" text="Festival Dag" required="true"/>
+                                <DatePicker id="inputFestivalDay" 
+                                    placeholder="Selecteer datum"
+                                    valueFormat="yyyy-MM-dd"
+                                    displayFormat="long"/>
+                                
+                                <Label id="labelStartTime" text="Starttijd" required="true"/>
+                                <TimePicker id="inputStartTime" 
+                                    placeholder="HH:mm"
+                                    valueFormat="HH:mm:ss"
+                                    displayFormat="HH:mm"/>
+                                
+                                <Label id="labelEndTime" text="Eindtijd" required="true"/>
+                                <TimePicker id="inputEndTime" 
+                                    placeholder="HH:mm"
+                                    valueFormat="HH:mm:ss"
+                                    displayFormat="HH:mm"/>
+                            </form:content>
+                        </form:SimpleForm>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
         </content>
         <beginButton>
             <Button id="btnSaveArtist" text="Opslaan" type="Emphasized" press=".onSaveArtist"/>

@@ -61,6 +61,9 @@ sap.ui.define([
         // ==================== EDIT ARTIST ====================
         onEditArtist: function () {
             var oView = this.getView();
+            
+            // Reset geselecteerde performance
+            this._oSelectedPerformanceContext = null;
 
             if (!this._pEditDialog) {
                 this._pEditDialog = Fragment.load({
@@ -75,26 +78,91 @@ sap.ui.define([
             
             this._pEditDialog.then(function (oDialog) {
                 oDialog.setBindingContext(oView.getBindingContext());
+                
+                // Verberg performance form tot er een geselecteerd is
+                var oPerformanceForm = oView.byId("editPerformanceForm");
+                if (oPerformanceForm) {
+                    oPerformanceForm.setVisible(false);
+                }
+                
+                // Reset list selectie
+                var oPerformanceList = oView.byId("editPerformancesList");
+                if (oPerformanceList) {
+                    oPerformanceList.removeSelections(true);
+                }
+                
                 oDialog.open();
             }.bind(this));
         },
 
-        onSaveEditArtist: function () {
-            var oModel = this.getView().getModel();
+        onPerformanceSelectForEdit: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("listItem");
+            var oContext = oSelectedItem.getBindingContext();
             
-            // Submit changes
+            // Bewaar geselecteerde performance context
+            this._oSelectedPerformanceContext = oContext;
+            
+            var oView = this.getView();
+            
+            // Toon het bewerkformulier
+            var oPerformanceForm = oView.byId("editPerformanceForm");
+            oPerformanceForm.setVisible(true);
+            
+            // Vul de velden met huidige waarden
+            var sStageId = oContext.getProperty("stage_ID");
+            var sFestivalDay = oContext.getProperty("festivalDay");
+            var sStartTime = oContext.getProperty("startTime");
+            var sEndTime = oContext.getProperty("endTime");
+            
+            oView.byId("editSelectStage").setSelectedKey(sStageId);
+            oView.byId("editInputFestivalDay").setValue(sFestivalDay);
+            oView.byId("editInputStartTime").setValue(sStartTime);
+            oView.byId("editInputEndTime").setValue(sEndTime);
+        },
+
+        onSaveEditArtist: function () {
+            var oView = this.getView();
+            var oModel = oView.getModel();
+            
+            // Sla artiest wijzigingen op (deze worden automatisch bijgehouden door binding)
+            
+            // Als er een performance geselecteerd is, update die ook
+            if (this._oSelectedPerformanceContext) {
+                var sStageId = oView.byId("editSelectStage").getSelectedKey();
+                var sFestivalDay = oView.byId("editInputFestivalDay").getValue();
+                var sStartTime = oView.byId("editInputStartTime").getValue();
+                var sEndTime = oView.byId("editInputEndTime").getValue();
+                
+                // Validatie
+                if (!sStageId || !sFestivalDay || !sStartTime || !sEndTime) {
+                    MessageBox.error("Vul alle performance velden in");
+                    return;
+                }
+                
+                // Update performance
+                this._oSelectedPerformanceContext.setProperty("stage_ID", sStageId);
+                this._oSelectedPerformanceContext.setProperty("festivalDay", sFestivalDay);
+                this._oSelectedPerformanceContext.setProperty("startTime", sStartTime);
+                this._oSelectedPerformanceContext.setProperty("endTime", sEndTime);
+            }
+            
+            // Submit alle changes
             oModel.submitBatch("updateGroup").then(function () {
-                MessageToast.show("Artiest bijgewerkt!");
+                MessageToast.show("Wijzigingen opgeslagen!");
             }).catch(function (oError) {
                 MessageBox.error("Fout bij opslaan: " + oError.message);
             });
 
             this.byId("editArtistDialog").close();
+            
+            // Refresh de view om wijzigingen te tonen
+            this.getView().getBindingContext().refresh();
         },
 
         onCancelEditArtist: function () {
             var oModel = this.getView().getModel();
             oModel.resetChanges();
+            this._oSelectedPerformanceContext = null;
             this.byId("editArtistDialog").close();
         },
 

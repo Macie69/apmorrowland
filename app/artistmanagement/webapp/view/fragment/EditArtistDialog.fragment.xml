@@ -5,45 +5,106 @@
     
     <Dialog id="editArtistDialog" title="Artiest Bewerken">
         <content>
-            <form:SimpleForm id="editArtistForm"
-                editable="true"
-                layout="ResponsiveGridLayout"
-                labelSpanXL="4"
-                labelSpanL="4"
-                labelSpanM="4"
-                labelSpanS="12"
-                emptySpanXL="0"
-                emptySpanL="0"
-                emptySpanM="0"
-                emptySpanS="0"
-                columnsXL="1"
-                columnsL="1"
-                columnsM="1">
-                <form:content>
-                    <Label id="editLabelName" text="Naam" required="true"/>
-                    <Input id="editInputName" value="{name}"/>
+            <IconTabBar id="editArtistTabBar" expanded="true">
+                <!-- Tab 1: Artiest Info -->
+                <items>
+                    <IconTabFilter id="editTabArtistInfo" text="Artiest Info" icon="sap-icon://person-placeholder">
+                        <form:SimpleForm id="editArtistForm"
+                            editable="true"
+                            layout="ResponsiveGridLayout"
+                            labelSpanXL="4"
+                            labelSpanL="4"
+                            labelSpanM="4"
+                            labelSpanS="12"
+                            emptySpanXL="0"
+                            emptySpanL="0"
+                            emptySpanM="0"
+                            emptySpanS="0"
+                            columnsXL="1"
+                            columnsL="1"
+                            columnsM="1">
+                            <form:content>
+                                <Label id="editLabelName" text="Naam" required="true"/>
+                                <Input id="editInputName" value="{name}"/>
+                                
+                                <Label id="editLabelGenre" text="Genre" required="true"/>
+                                <Select id="editSelectGenre" selectedKey="{genre}">
+                                    <items>
+                                        <core:Item id="editItemEDM" key="EDM" text="EDM"/>
+                                        <core:Item id="editItemTechno" key="Techno" text="Techno"/>
+                                        <core:Item id="editItemTrance" key="Trance" text="Trance"/>
+                                        <core:Item id="editItemDeepHouse" key="Deep House" text="Deep House"/>
+                                        <core:Item id="editItemHardstyle" key="Hardstyle" text="Hardstyle"/>
+                                    </items>
+                                </Select>
+                                
+                                <Label id="editLabelCountry" text="Land" required="true"/>
+                                <Input id="editInputCountry" value="{country}"/>
+                                
+                                <Label id="editLabelDescription" text="Beschrijving"/>
+                                <TextArea id="editInputDescription" rows="3" value="{description}"/>
+                                
+                                <Label id="editLabelPopularity" text="Populariteit (0-100)"/>
+                                <Slider id="editSliderPopularity" min="0" max="100" value="{popularity}" enableTickmarks="true" showAdvancedTooltip="true"/>
+                            </form:content>
+                        </form:SimpleForm>
+                    </IconTabFilter>
                     
-                    <Label id="editLabelGenre" text="Genre" required="true"/>
-                    <Select id="editSelectGenre" selectedKey="{genre}">
-                        <items>
-                            <core:Item id="editItemEDM" key="EDM" text="EDM"/>
-                            <core:Item id="editItemTechno" key="Techno" text="Techno"/>
-                            <core:Item id="editItemTrance" key="Trance" text="Trance"/>
-                            <core:Item id="editItemDeepHouse" key="Deep House" text="Deep House"/>
-                            <core:Item id="editItemHardstyle" key="Hardstyle" text="Hardstyle"/>
-                        </items>
-                    </Select>
-                    
-                    <Label id="editLabelCountry" text="Land" required="true"/>
-                    <Input id="editInputCountry" value="{country}"/>
-                    
-                    <Label id="editLabelDescription" text="Beschrijving"/>
-                    <TextArea id="editInputDescription" rows="3" value="{description}"/>
-                    
-                    <Label id="editLabelPopularity" text="Populariteit (0-100)"/>
-                    <Slider id="editSliderPopularity" min="0" max="100" value="{popularity}" enableTickmarks="true" showAdvancedTooltip="true"/>
-                </form:content>
-            </form:SimpleForm>
+                    <!-- Tab 2: Performance Bewerken -->
+                    <IconTabFilter id="editTabPerformance" text="Optreden Bewerken" icon="sap-icon://calendar">
+                        <VBox id="performancesEditBox" class="sapUiSmallMargin">
+                            <Text id="performanceEditInfo" text="Selecteer een optreden om te bewerken:" class="sapUiSmallMarginBottom"/>
+                            <List id="editPerformancesList" 
+                                items="{performances}"
+                                mode="SingleSelectMaster"
+                                selectionChange=".onPerformanceSelectForEdit">
+                                <StandardListItem id="editPerformanceItem"
+                                    title="{stage/name}"
+                                    description="{festivalDay}"
+                                    info="{startTime} - {endTime}"
+                                    type="Active"/>
+                            </List>
+                            
+                            <form:SimpleForm id="editPerformanceForm"
+                                visible="false"
+                                editable="true"
+                                layout="ResponsiveGridLayout"
+                                labelSpanXL="4"
+                                labelSpanL="4"
+                                labelSpanM="4"
+                                labelSpanS="12"
+                                class="sapUiMediumMarginTop">
+                                <form:content>
+                                    <Label id="editLabelStage" text="Stage" required="true"/>
+                                    <Select id="editSelectStage" items="{/Stages}">
+                                        <items>
+                                            <core:Item id="editStageItem" key="{ID}" text="{name}"/>
+                                        </items>
+                                    </Select>
+                                    
+                                    <Label id="editLabelFestivalDay" text="Festival Dag" required="true"/>
+                                    <DatePicker id="editInputFestivalDay" 
+                                        placeholder="Selecteer datum"
+                                        valueFormat="yyyy-MM-dd"
+                                        displayFormat="long"/>
+                                    
+                                    <Label id="editLabelStartTime" text="Starttijd" required="true"/>
+                                    <TimePicker id="editInputStartTime" 
+                                        placeholder="HH:mm"
+                                        valueFormat="HH:mm:ss"
+                                        displayFormat="HH:mm"/>
+                                    
+                                    <Label id="editLabelEndTime" text="Eindtijd" required="true"/>
+                                    <TimePicker id="editInputEndTime" 
+                                        placeholder="HH:mm"
+                                        valueFormat="HH:mm:ss"
+                                        displayFormat="HH:mm"/>
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
         </content>
         <beginButton>
             <Button id="btnSaveEditArtist" text="Opslaan" type="Emphasized" press=".onSaveEditArtist"/>
