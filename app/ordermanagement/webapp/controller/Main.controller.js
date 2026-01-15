@@ -5,11 +5,14 @@ sap.ui.define([
     "sap/ui/core/Fragment",
     "sap/m/MessageToast",
     "sap/m/MessageBox",
-    "sap/f/library"
-], function (Controller, Filter, FilterOperator, Fragment, MessageToast, MessageBox, fioriLibrary) {
+    "sap/f/library",
+    "apmorrowland/ordermanagement/model/formatter"
+], function (Controller, Filter, FilterOperator, Fragment, MessageToast, MessageBox, fioriLibrary, formatter) {
     "use strict";
 
     return Controller.extend("apmorrowland.ordermanagement.controller.Main", {
+        
+        formatter: formatter,
         
         onInit: function () {
             this._oWizardData = {

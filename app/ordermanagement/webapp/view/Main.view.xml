@@ -87,16 +87,12 @@
                         <items>
                             <ColumnListItem id="orderListItem" type="Active">
                                 <cells>
-                                    <Text id="cellDate" text="{
-                                        path: 'orderDate',
-                                        type: 'sap.ui.model.type.Date',
-                                        formatOptions: { style: 'medium' }
-                                    }"/>
+                                    <Text id="cellDate" text="{path: 'orderDate', formatter: '.formatter.formatDate'}"/>
                                     <Text id="cellCustomer" text="{customer/firstName} {customer/lastName}"/>
                                     <Text id="cellType" text="{orderType}"/>
                                     <ObjectStatus id="cellStatus" 
                                         text="{status}" 
-                                        state="{= ${status} === 'Paid' ? 'Success' : (${status} === 'Cancelled' ? 'Error' : 'Warning')}"/>
+                                        state="{path: 'status', formatter: '.formatter.formatStatusState'}"/>
                                     <ObjectNumber id="cellTotal" 
                                         number="{totalAmount}" 
                                         unit="EUR"/>
@@ -122,16 +118,12 @@
                         <statuses>
                             <ObjectStatus id="orderStatusIndicator" 
                                 text="{status}" 
-                                state="{= ${status} === 'Paid' ? 'Success' : (${status} === 'Cancelled' ? 'Error' : 'Warning')}"/>
+                                state="{path: 'status', formatter: '.formatter.formatStatusState'}"/>
                         </statuses>
                         <attributes>
                             <ObjectAttribute id="attrCustomer" title="Klant" text="{customer/firstName} {customer/lastName}"/>
                             <ObjectAttribute id="attrEmail" title="Email" text="{customer/email}"/>
-                            <ObjectAttribute id="attrDate" title="Datum" text="{
-                                path: 'orderDate',
-                                type: 'sap.ui.model.type.Date',
-                                formatOptions: { style: 'long' }
-                            }"/>
+                            <ObjectAttribute id="attrDate" title="Datum" text="{path: 'orderDate', formatter: '.formatter.formatDateLong'}"/>
                             <ObjectAttribute id="attrType" title="Type" text="{orderType}"/>
                         </attributes>
                     </ObjectHeader>
@@ -188,13 +180,13 @@
                             type="Accept" 
                             icon="sap-icon://accept"
                             press="onMarkPaid"
-                            visible="{= ${status} === 'Open'}"/>
+                            visible="{path: 'status', formatter: '.formatter.isOrderOpen'}"/>
                         <Button id="btnCancelOrder" 
                             text="Annuleren" 
                             type="Reject" 
                             icon="sap-icon://decline"
                             press="onCancelOrder"
-                            visible="{= ${status} === 'Open'}"/>
+                            visible="{path: 'status', formatter: '.formatter.isOrderOpen'}"/>
                     </OverflowToolbar>
                 </footer>
             </Page>
